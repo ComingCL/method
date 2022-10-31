@@ -11,5 +11,6 @@ public class Client {
         order.add("stop");
         car.setOrder(order);
         car.run();
+
     }
 }
