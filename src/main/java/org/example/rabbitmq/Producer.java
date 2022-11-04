@@ -1,9 +1,12 @@
 package org.example.rabbitmq;
 
-import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.*;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -11,30 +14,54 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2022/10/31 21:46
  */
 public class Producer {
+//    交换机名称
+    public static final String FAN_EXCHANGE = "FAN_EXCHANGE_DEMO";
+    public static final String DIRECT_EXCHANGE = "DIRECT_EXCHANGE_DEMO";
+    public static final String TOPIC_EXCHANGE = "TOPIC_EXCHANGE_DEMO";
+    public static final String HEADERS_EXCHANGE = "HEADERS_EXCHANGE_DEMO";
 //    队列名称
-    public static final String QUEUE_NAME = "hello";
-//    发消息
-    public static void main(String[] args) throws IOException, TimeoutException {
+    public static final String FAN_QUEUE = "FAN_QUEUE_DEMO";
+    public static final String DIRECT_QUEUE = "DIRECT_QUEUE_DEMO";
+    public static final String TOPIC_QUEUE = "TOPIC_QUEUE_DEMO";
+    public static final String HEADERS_QUEUE = "HEADERS_QUEUE_DEMO";
+    public static final SortedSet<Long> confirmSet = Collections.synchronizedSortedSet(new TreeSet<Long>());
+    public static void FAN_METHOD() throws IOException, TimeoutException {
         Channel channel = RabbitUtil.conn();
-        /**
-         * 生成一个队列
-         * 1. 队列名称
-         * 2. 队列里面的消息是否持久化(磁盘) 默认情况消息存储在内存中
-         * 3. 该队列是否只供一个消费者进行消费 是否进行消息共享, true可以多个消费者消费
-         * 4. 队列是否自动删除
-         * 5. 其他参数
-         */
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-//        发消息
-        String message = "hello world";
-        /**
-         * 发送一个消费
-         * 1. 发送到哪个交换机
-         * 2. 路由的key是哪个 本次是队列的名称
-         * 3. 其他参数消息
-         * 4. 发送消息的消息体
-         */
-        channel.basicPublish("", QUEUE_NAME, null, message.getBytes(StandardCharsets.UTF_8));
-        System.out.println("消息发送完毕");
+        channel.exchangeDeclare(FAN_EXCHANGE, BuiltinExchangeType.FANOUT, true, true,false, null);
+        channel.queueDeclare(FAN_QUEUE, true, false, true, null);
+        channel.queueBind(FAN_QUEUE, FAN_QUEUE, "333");
+        channel.confirmSelect();
+        channel.basicPublish(FAN_EXCHANGE, "", null,"hello world".getBytes(StandardCharsets.UTF_8));
+
+        channel.close();
+        RabbitUtil.Channel_Close();
+    }
+    public static void DIRECT_METHOD() throws IOException, TimeoutException {
+        Channel channel = RabbitUtil.conn();
+        channel.exchangeDeclare(DIRECT_EXCHANGE, BuiltinExchangeType.FANOUT, true, true,false, null);
+        channel.queueDeclare();
+        channel.confirmSelect();
+        channel.close();
+        RabbitUtil.Channel_Close();
+    }
+    public static void TOPIC_METHOD() throws IOException, TimeoutException {
+        Channel channel = RabbitUtil.conn();
+        channel.exchangeDeclare(TOPIC_EXCHANGE, BuiltinExchangeType.FANOUT, true, true,false, null);
+        channel.queueDeclare();
+        channel.confirmSelect();
+        channel.close();
+        RabbitUtil.Channel_Close();
+    }
+    public static void HEADERS_METHOD() throws IOException, TimeoutException {
+        Channel channel = RabbitUtil.conn();
+        channel.exchangeDeclare(HEADERS_EXCHANGE, BuiltinExchangeType.FANOUT, true, true,false, null);
+        channel.queueDeclare();
+        channel.confirmSelect();
+        channel.close();
+        RabbitUtil.Channel_Close();
+    }
+//    发消息
+    public static void main(String[] args) throws IOException, TimeoutException, InterruptedException {
+
     }
 }

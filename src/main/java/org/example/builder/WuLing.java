@@ -13,6 +13,6 @@ public class WuLing extends Car{
 
     @Override
     protected void alarm() {
-        System.out.println("WuLing alarmed");
+        System.out.println("WuLing alarmed.");
     }
 }

@@ -12,14 +12,17 @@ import java.util.concurrent.TimeoutException;
  * @Date: 2022/10/31 22:46
  */
 public class RabbitUtil {
+    static final ConnectionFactory factory = new ConnectionFactory();
+    static Connection connection;
     public static Channel conn() throws IOException, TimeoutException {
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("127.0.0.1");
+        factory.setHost("localhost");
         factory.setPort(5672);
-        factory.setUsername("root");
+        factory.setUsername("admin");
         factory.setPassword("admin");
-
-        Connection connection = factory.newConnection();
+        connection = factory.newConnection();
         return connection.createChannel();
+    }
+    public static void Channel_Close() throws IOException {
+        connection.close();
     }
 }
