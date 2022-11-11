@@ -16,10 +16,10 @@ public class RabbitUtil {
     public static Connection connection;
     public static Channel conn() throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("127.0.0.1");
+        factory.setHost("localhost");
         factory.setPort(5672);
-        factory.setUsername("guest");
-        factory.setPassword("guest");
+        factory.setUsername("admin");
+        factory.setPassword("admin");
         connection = factory.newConnection();
         return connection.createChannel();
     }

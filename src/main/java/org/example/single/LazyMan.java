@@ -6,12 +6,11 @@ package org.example.single;
  */
 public class LazyMan {
     private LazyMan(){
-        System.out.println(Thread.currentThread().getName() + " ok");
     }
 
     private volatile static LazyMan lazyMan;// 防止指令重排
 
-    private static LazyMan getInstance(){
+    public static LazyMan getInstance(){
         if(lazyMan == null){
             synchronized (LazyMan.class){
                 if(lazyMan == null){
@@ -26,11 +25,5 @@ public class LazyMan {
             }
         }
         return lazyMan;
-    }
-
-    public static void main(String[] args) {
-        for(int i=0;i<10;i++){
-            new Thread(LazyMan::getInstance).start();
-        }
     }
 }
