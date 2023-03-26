@@ -5,6 +5,8 @@ import com.rabbitmq.client.*;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import org.example.strategy.Dog;
+
 /**
  * @Author: ComingLiu
  * @Date: 2022/10/31 22:32
@@ -32,6 +34,7 @@ public class Consumer {
             }
         });
         channel.close();
+        Dog dog = new Dog(0, 0);
         RabbitUtil.close();
     }
 }

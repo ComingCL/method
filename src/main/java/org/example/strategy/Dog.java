@@ -1,20 +1,28 @@
 package org.example.strategy;
 
 public class Dog {
-	int weight;
-	int height;
+	private int weight;
+	private int height;
 	
 	public Dog(int weight, int height) {
 		this.weight = weight;
 		this.height = height;
 	}
-	public int compareTo(Dog d) {
-		if(d.weight > weight) return -1;
-		if(d.weight < weight) return 1;
-		return 0;
-	}
 	@Override
 	public String toString() {
 		return "Dog{" + "weight=" + weight + ",height=" + height + "}";
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+	public int getHeight() {
+		return height;
+	}
+	public int getWeight() {
+		return weight;
 	}
 }
